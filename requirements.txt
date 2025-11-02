@@ -1,0 +1,25 @@
+# Core LangChain packages
+langchain
+langchain-core
+langchain-community
+langchain-astradb
+
+# Embeddings (Hugging Face)
+sentence-transformers
+
+# Google Gemini (optional if you want to keep Gemini API)
+langchain-google-genai
+google-generativeai
+
+# Environment and data handling
+python-dotenv
+pandas
+datasets
+pypdf
+
+# Web framework
+flask
+
+# Local setup
+-e .
+

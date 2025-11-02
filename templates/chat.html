@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>FoodBot – Your Smart Recipe Assistant</h2>
+            
+        </div>
+
+        <div id="chat-box" class="chat-box">
+            <div class="bot-msg">👋 Hi! Tell me the ingredients you have, and I’ll suggest recipes!</div>
+        </div>
+
+        <form id="chat-form" class="chat-input-area">
+            <input type="text" id="user-input" name="msg" placeholder="Type your ingredients... e.g., egg, onion, oil" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+        const input = document.getElementById('user-input');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userMsg = input.value;
+            appendMessage(userMsg, 'user');
+            input.value = '';
+
+            const formData = new FormData();
+            formData.append("msg", userMsg);
+
+            const response = await fetch("/get", {
+                method: "POST",
+                body: formData
+            });
+
+            const botReply = await response.text();
+            appendMessage(botReply, 'bot');
+        });
+
+        function appendMessage(message, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add(sender === 'user' ? 'user-msg' : 'bot-msg');
+            msgDiv.innerHTML = message.replace(/\n/g, '<br>');
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
